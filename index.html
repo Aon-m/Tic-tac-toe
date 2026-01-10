@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Icon -->
+    <link rel="icon" href="favicon.png" type="image/png" />
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Outfit:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- File links -->
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="script.js"></script>
+
+    <title>Tic Tac Toe</title>
+  </head>
+  <body>
+    <header>
+      <h1 class="game-name">Tic Tac Toe</h1>
+    </header>
+    <main>
+      <section class="character-selection-screen">
+        <div class="card">
+          <h2 class="card__title">Player 1</h2>
+          <img class="card__image" src="#" alt="character-image" />
+          <div class="card__buttons">
+            <button
+              class="card__button card__button--wide soft-animation"
+              type="button"
+              value="x"
+            >
+              x
+            </button>
+            <div class="card__players">
+              <button
+                class="card__button card__button--player card__button--human"
+                type="button"
+                value="human"
+              >
+                <span> Human </span>
+              </button>
+              <button
+                class="card__button card__button--player card__button--computer"
+                type="button"
+                value="computer"
+              >
+                <span> Computer </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="game-controls">
+          <div class="game-controls__status">
+            <h4>Selected:</h4>
+            <p id="chosen-game">PvP</p>
+          </div>
+          <button
+            class="game-controls__start-button soft-animation"
+            id="start-button"
+            type="button"
+          >
+            Start Game
+          </button>
+        </div>
+        <div class="card">
+          <h2 class="card__title">Player 2</h2>
+          <img class="card__image" src="#" alt="character-image" />
+          <div class="card__buttons">
+            <button
+              class="card__button card__button--wide soft-animation"
+              type="button"
+              value="x"
+            >
+              o
+            </button>
+            <div class="card__players">
+              <button
+                class="card__button card__button--player card__button--human"
+                type="button"
+                value="human"
+              >
+                <span> Human </span>
+              </button>
+              <button
+                class="card__button card__button--player card__button--computer"
+                type="button"
+                value="computer"
+              >
+                <span> Computer </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="gameboard-screen">
+        <div class="gameboard__players">
+          <div class="gameboard__player gameboard__player-1">
+            <div class="gameboard__score gameboard__score-1">
+              <span id="player-score-1">0</span>
+            </div>
+          </div>
+          <div class="gameboard__player gameboard__player-2">
+            <div class="gameboard__score gameboard__score-2">
+              <span id="player-score-2">0</span>
+            </div>
+          </div>
+        </div>
+        <div class="gameboard">
+          <div class="gameboard__square" id="square-1"></div>
+          <div class="gameboard__square" id="square-2"></div>
+          <div class="gameboard__square" id="square-3"></div>
+          <div class="gameboard__square" id="square-4"></div>
+          <div class="gameboard__square" id="square-5"></div>
+          <div class="gameboard__square" id="square-6"></div>
+          <div class="gameboard__square" id="square-7"></div>
+          <div class="gameboard__square" id="square-8"></div>
+          <div class="gameboard__square" id="square-9"></div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
