@@ -120,8 +120,15 @@ const startGame = (function () {
 
     playGame(player1, computer);
   }
+  function EvE(marker1, marker2, avatar1, avatar2) {
+    let computer1 = player.computer(avatar1, marker1);
+    let computer2 = player.computer(avatar2, marker2);
+
+    playGame(computer1, computer2);
+  }
   return {
     PvP,
     PvE,
+    EvE,
   };
 })();
