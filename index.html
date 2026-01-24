@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -16,32 +16,97 @@
     />
 
     <!-- File links -->
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="./styles/styles.css" />
     <script defer src="script.js"></script>
 
     <title>Tic Tac Toe</title>
   </head>
   <body>
     <header>
-      <h1 class="game-name">Tic Tac Toe</h1>
+      <h1 class="game-name">
+        <span class="fast-slow-hover">Tic</span>
+        <span class="fast-slow-hover">Tac</span>
+        <span class="fast-slow-hover">Toe</span>
+      </h1>
     </header>
     <main>
       <section class="character-selection-screen">
         <div class="card">
-          <h2 class="card__title">Player 1</h2>
-          <img class="card__image" src="#" alt="character-image" />
+          <div class="card__form">
+            <label class="card__name"
+              >Enter name:
+              <input
+                id="player-name-1"
+                type="text"
+                value="Player 1"
+                required
+                class="card__input"
+            /></label>
+          </div>
+          <div class="card__image">
+            <button type="button" class="card__image-button" id="back-1">
+              <svg
+                class="card__icon"
+                width="15"
+                height="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M13 0L1 12l12 12"
+                  stroke="currentColor"
+                  fill="none"
+                  fill-rule="evenodd"
+                />
+              </svg>
+            </button>
+            <img
+              class="card__character card__character--preview"
+              id="previous-preview-1"
+              src="./characters/human/character-human-7.png"
+              alt="character-image"
+            />
+            <img
+              class="card__character card__character--default"
+              id="current-preview-1"
+              src="./characters/human/character-human-1.png"
+              alt="character-image"
+            />
+            <img
+              class="card__character card__character--preview"
+              id="next-preview-1"
+              src="./characters/human/character-human-2.png"
+              alt="character-image"
+            />
+            <button type="button" class="card__image-button" id="forward-1">
+              <svg
+                class="card__icon"
+                width="14"
+                height="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M1 0l12 12L1 24"
+                  stroke="currentColor"
+                  fill="none"
+                  fill-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+          <!-- Add credit -->
           <div class="card__buttons">
             <button
-              class="card__button card__button--wide soft-animation"
+              class="card__button card__button--wide"
               type="button"
               value="x"
             >
-              x
+              <span class="marker" id="marker-1"> x </span>
             </button>
             <div class="card__players">
               <button
-                class="card__button card__button--player card__button--human"
+                class="card__button card__button--player card__button--human card__button--selected"
                 type="button"
+                id="human-1"
                 value="human"
               >
                 <span> Human </span>
@@ -49,6 +114,7 @@
               <button
                 class="card__button card__button--player card__button--computer"
                 type="button"
+                id="computer-1"
                 value="computer"
               >
                 <span> Computer </span>
@@ -62,7 +128,7 @@
             <p id="chosen-game">PvP</p>
           </div>
           <button
-            class="game-controls__start-button soft-animation"
+            class="game-controls__start-button fast-slow-hover"
             id="start-button"
             type="button"
           >
@@ -70,26 +136,88 @@
           </button>
         </div>
         <div class="card">
-          <h2 class="card__title">Player 2</h2>
-          <img class="card__image" src="#" alt="character-image" />
+          <div class="card__form">
+            <label class="card__name"
+              >Enter name:
+              <input
+                type="text"
+                id="player-name-2"
+                value="Player 2"
+                required
+                class="card__input"
+            /></label>
+          </div>
+          <div class="card__image">
+            <button type="button" class="card__image-button" id="back-2">
+              <svg
+                class="card__icon"
+                width="15"
+                height="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M13 0L1 12l12 12"
+                  stroke="currentColor"
+                  fill="none"
+                  fill-rule="evenodd"
+                />
+              </svg>
+            </button>
+            <img
+              class="card__character card__character--preview"
+              id="previous-preview-2"
+              src="./characters/human/character-human-7.png"
+              alt="character-image"
+            />
+            <img
+              class="card__character card__character--default"
+              id="current-preview-2"
+              src="./characters/human/character-human-1.png"
+              alt="character-image"
+            />
+            <img
+              class="card__character card__character--preview"
+              id="next-preview-2"
+              src="./characters/human/character-human-2.png"
+              alt="character-image"
+            />
+            <button type="button" class="card__image-button" id="forward-2">
+              <svg
+                class="card__icon"
+                width="14"
+                height="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M1 0l12 12L1 24"
+                  stroke="currentColor"
+                  fill="none"
+                  fill-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+          <!-- Add credit -->
           <div class="card__buttons">
             <button
-              class="card__button card__button--wide soft-animation"
+              class="card__button card__button--wide"
               type="button"
               value="x"
             >
-              o
+              <span class="marker" id="marker-2"> o </span>
             </button>
             <div class="card__players">
               <button
                 class="card__button card__button--player card__button--human"
                 type="button"
+                id="human-2"
                 value="human"
               >
                 <span> Human </span>
               </button>
               <button
-                class="card__button card__button--player card__button--computer"
+                class="card__button card__button--player card__button--computer card__button--selected"
+                id="computer-2"
                 type="button"
                 value="computer"
               >
@@ -113,15 +241,33 @@
           </div>
         </div>
         <div class="gameboard">
-          <div class="gameboard__square" id="square-1"></div>
-          <div class="gameboard__square" id="square-2"></div>
-          <div class="gameboard__square" id="square-3"></div>
-          <div class="gameboard__square" id="square-4"></div>
-          <div class="gameboard__square" id="square-5"></div>
-          <div class="gameboard__square" id="square-6"></div>
-          <div class="gameboard__square" id="square-7"></div>
-          <div class="gameboard__square" id="square-8"></div>
-          <div class="gameboard__square" id="square-9"></div>
+          <div class="gameboard__square">
+            <button class="gameboard__button" id="square-1"></button>
+          </div>
+          <div class="gameboard__square">
+            <button class="gameboard__button" id="square-2"></button>
+          </div>
+          <div class="gameboard__square">
+            <button class="gameboard__button" id="square-3"></button>
+          </div>
+          <div class="gameboard__square">
+            <button class="gameboard__button" id="square-4"></button>
+          </div>
+          <div class="gameboard__square">
+            <button class="gameboard__button" id="square-5"></button>
+          </div>
+          <div class="gameboard__square">
+            <button class="gameboard__button" id="square-6"></button>
+          </div>
+          <div class="gameboard__square">
+            <button class="gameboard__button" id="square-7"></button>
+          </div>
+          <div class="gameboard__square">
+            <button class="gameboard__button" id="square-8"></button>
+          </div>
+          <div class="gameboard__square">
+            <button class="gameboard__button" id="square-9"></button>
+          </div>
         </div>
       </section>
     </main>

@@ -1,5 +1,6 @@
-// Pick the players
-// Create players
+// TIC TAC TOE LOGIC
+// CREATE PLAYERS
+
 const player = (function () {
   let startingScore = 0;
 
@@ -26,48 +27,44 @@ const player = (function () {
   };
 })();
 
-// Play Game
-// Create Game
+// CREATE GAME
 
-const startGame = (function () {
-  let gameboard = Array(9).fill(undefined);
-
+const createGame = (function () {
   function playGame(player1, player2) {
+    let gameboard = Array(9).fill(undefined);
+
+    let gameActive = true;
     let turn = 0;
 
-    while (gameboard.includes(undefined)) {
-      if (turn >= 4) {
-        const winner = winCheck();
-        if (winner) {
-          alert(`${winner} wins!`);
-          break;
-        } else if (winner === "draw") {
-          alert("draw");
-          break;
-        }
-      }
+    const squares = document.querySelectorAll(".gameboard__button");
 
-      let currentTurn = nextTurn();
+    squares.forEach((square, index) => {
+      square.addEventListener("click", (e) => {
+        if (!gameActive) return;
 
-      switch (currentTurn) {
-        case "player1":
-          enterMarker(player1.marker, player1.position);
-          break;
-        case "player2":
-          enterMarker(player2.marker, player2.position);
-          break;
-      }
-    }
+        if (gameboard[index]) return;
 
-    function enterMarker(marker, position) {
-      let arrayPosition = Number(position) - 1;
-      if (gameboard[arrayPosition]) return;
-      if (!gameboard[arrayPosition]) {
-        gameboard[arrayPosition] = marker;
+        const currentPlayer = turn % 2 === 0 ? player1 : player2;
+
+        enterMarker(currentPlayer.marker, index, e);
+
+        winCheck();
+
+        turn++;
+      });
+    });
+
+    function enterMarker(marker, index, e) {
+      let square = e.currentTarget;
+
+      if (gameboard[index]) return;
+      if (!gameboard[index]) {
+        gameboard[index] = marker;
+        square.textContent = marker;
       }
     }
 
-    function winCheck() {
+    function winStatus() {
       const wins = [
         [0, 1, 2], // row 1
         [3, 4, 5], // row 2
@@ -95,30 +92,66 @@ const startGame = (function () {
       return false;
     }
 
-    function nextTurn() {
-      const turns = ["player1", "player2"];
+    function winCheck() {
+      const winner = winStatus();
 
-      const currentTurn = turns[turn % 2];
-      turn++;
-      return currentTurn;
+      if (winner === "draw") {
+        setTimeout(() => {
+          alert("draw");
+        }, 300);
+      } else if (winner) {
+        gameActive = false;
+        setTimeout(() => {
+          alert(`${winner} wins!`);
+        }, 200);
+
+        setTimeout(() => {
+          clearGameboard();
+        }, 300);
+      }
+    }
+
+    function clearGameboard() {
+      gameboard = Array(9).fill(undefined);
+      squares.forEach((square) => (square.textContent = ""));
+
+      domGameboard.hide();
     }
   }
 
-  function PvP(player1, player2, marker1, marker2, avatar1, avatar2) {
-    player1.marker = marker1;
-    player2.marker = marker2;
+  const domGameboard = (function () {
+    const selectionScreen = document.querySelector(
+        ".character-selection-screen",
+      ),
+      gameboardScreen = document.querySelector(".gameboard-screen");
 
-    player1.avatar = avatar1;
-    player2.avatar = avatar2;
+    function show() {
+      selectionScreen.style.display = "none";
+      gameboardScreen.style.display = "flex";
+    }
+
+    function hide() {
+      selectionScreen.style.display = "flex";
+      gameboardScreen.style.display = "none";
+    }
+    return {
+      show,
+      hide,
+    };
+  })();
+
+  function PvP(name1, name2, marker1, marker2, avatar1, avatar2) {
+    let player1 = new player.human(name1, avatar1, marker1);
+    let player2 = new player.human(name2, avatar2, marker2);
 
     playGame(player1, player2);
   }
-  function PvE(player1, marker1, marker2, avatar1, avatar2) {
-    let computer = player.computer(avatar2, marker2);
-    player1.marker = marker1;
-    player1.avatar = avatar1;
 
-    playGame(player1, computer);
+  function PvE(name1, marker1, marker2, avatar1, avatar2) {
+    let computer = player.computer(avatar2, marker2);
+    let player = new player.human(name1, avatar1, marker1);
+
+    playGame(player, computer);
   }
   function EvE(marker1, marker2, avatar1, avatar2) {
     let computer1 = player.computer(avatar1, marker1);
@@ -126,9 +159,337 @@ const startGame = (function () {
 
     playGame(computer1, computer2);
   }
+
   return {
     PvP,
     PvE,
     EvE,
+    domGameboard,
   };
 })();
+
+// SELECT MARKER
+const marker = (function changeMarker() {
+  let currentMarker = "x",
+    otherMarker = "o";
+
+  const domMarker1 = document.querySelector("#marker-1");
+  const domMarker2 = document.querySelector("#marker-2");
+
+  function swap() {
+    [currentMarker, otherMarker] = [otherMarker, currentMarker];
+
+    domMarker1.textContent = currentMarker;
+    domMarker2.textContent = otherMarker;
+  }
+
+  function status() {
+    let marker1 = domMarker1.textContent,
+      marker2 = domMarker2.textContent;
+
+    return {
+      marker1,
+      marker2,
+    };
+  }
+
+  return {
+    swap,
+    status,
+  };
+})();
+
+const chosenMarker = document.querySelectorAll(".marker");
+
+chosenMarker.forEach((btn) => {
+  btn.addEventListener("click", marker.swap);
+});
+
+// CHANGE CHARACTER
+
+const move1 = (function () {
+  let currentIndex = 0;
+
+  // Elements
+  const currentPreview1 = document.querySelector("#current-preview-1"),
+    previousPreview1 = document.querySelector("#previous-preview-1"),
+    nextPreview1 = document.querySelector("#next-preview-1");
+
+  // Data arrays
+  const previousPreviews = [
+    "./characters/human/character-human-7.png",
+    "./characters/human/character-human-1.png",
+    "./characters/human/character-human-2.png",
+    "./characters/human/character-human-3.png",
+    "./characters/human/character-human-4.png",
+    "./characters/human/character-human-5.png",
+    "./characters/human/character-human-6.png",
+  ];
+  const currentPreviews = [
+    "./characters/human/character-human-1.png",
+    "./characters/human/character-human-2.png",
+    "./characters/human/character-human-3.png",
+    "./characters/human/character-human-4.png",
+    "./characters/human/character-human-5.png",
+    "./characters/human/character-human-6.png",
+    "./characters/human/character-human-7.png",
+  ];
+  const nextPreviews = [
+    "./characters/human/character-human-2.png",
+    "./characters/human/character-human-3.png",
+    "./characters/human/character-human-4.png",
+    "./characters/human/character-human-5.png",
+    "./characters/human/character-human-6.png",
+    "./characters/human/character-human-7.png",
+    "./characters/human/character-human-1.png",
+  ];
+
+  // Internal function to update content
+  function update() {
+    previousPreview1.src = previousPreviews[currentIndex];
+    currentPreview1.src = currentPreviews[currentIndex];
+    nextPreview1.src = nextPreviews[currentIndex];
+  }
+
+  // Move forward
+  function goForward() {
+    currentIndex = (currentIndex + 1) % currentPreviews.length;
+    update();
+  }
+
+  // Move back
+  function goBack() {
+    currentIndex =
+      (currentIndex - 1 + currentPreviews.length) % currentPreviews.length;
+    update();
+  }
+
+  // Initialize first slide
+  update();
+
+  return {
+    next: goForward,
+    prev: goBack,
+  };
+})();
+const move2 = (function () {
+  let currentIndex = 0;
+
+  // Elements
+  const currentPreview2 = document.querySelector("#current-preview-2"),
+    previousPreview2 = document.querySelector("#previous-preview-2"),
+    nextPreview2 = document.querySelector("#next-preview-2");
+
+  // Data arrays
+  const previousPreviews = [
+    "./characters/human/character-human-7.png",
+    "./characters/human/character-human-1.png",
+    "./characters/human/character-human-2.png",
+    "./characters/human/character-human-3.png",
+    "./characters/human/character-human-4.png",
+    "./characters/human/character-human-5.png",
+    "./characters/human/character-human-6.png",
+  ];
+  const currentPreviews = [
+    "./characters/human/character-human-1.png",
+    "./characters/human/character-human-2.png",
+    "./characters/human/character-human-3.png",
+    "./characters/human/character-human-4.png",
+    "./characters/human/character-human-5.png",
+    "./characters/human/character-human-6.png",
+    "./characters/human/character-human-7.png",
+  ];
+  const nextPreviews = [
+    "./characters/human/character-human-2.png",
+    "./characters/human/character-human-3.png",
+    "./characters/human/character-human-4.png",
+    "./characters/human/character-human-5.png",
+    "./characters/human/character-human-6.png",
+    "./characters/human/character-human-7.png",
+    "./characters/human/character-human-1.png",
+  ];
+
+  // Internal function to update content
+  function update() {
+    previousPreview2.src = previousPreviews[currentIndex];
+    currentPreview2.src = currentPreviews[currentIndex];
+    nextPreview2.src = nextPreviews[currentIndex];
+  }
+
+  // Move forward
+  function goForward() {
+    currentIndex = (currentIndex + 1) % currentPreviews.length;
+    update();
+  }
+
+  // Move back
+  function goBack() {
+    currentIndex =
+      (currentIndex - 1 + currentPreviews.length) % currentPreviews.length;
+    update();
+  }
+
+  // Initialize first slide
+  update();
+
+  return {
+    next: goForward,
+    prev: goBack,
+  };
+})();
+
+const fowardBtn1 = document.querySelector("#forward-1");
+const fowardBtn2 = document.querySelector("#forward-2");
+const backBtn1 = document.querySelector("#back-1");
+const backBtn2 = document.querySelector("#back-2");
+
+fowardBtn1.addEventListener("click", move1.next);
+backBtn1.addEventListener("click", move1.prev);
+fowardBtn2.addEventListener("click", move2.next);
+backBtn2.addEventListener("click", move2.prev);
+
+// SELECT CHARACTER
+
+const playerBtn = document.querySelectorAll(".card__button--player");
+
+const humanBtn1 = document.querySelector("#human-1");
+const computerBtn1 = document.querySelector("#computer-1");
+const humanBtn2 = document.querySelector("#human-2");
+const computerBtn2 = document.querySelector("#computer-2");
+
+playerBtn.forEach((btn) => btn.addEventListener("click", (e) => {}));
+
+humanBtn1.addEventListener("click", (e) => {
+  domPlayer.select(humanBtn1, computerBtn1, e);
+});
+computerBtn1.addEventListener("click", (e) => {
+  domPlayer.select(humanBtn1, computerBtn1, e);
+});
+humanBtn2.addEventListener("click", (e) => {
+  domPlayer.select(humanBtn2, computerBtn2, e);
+});
+computerBtn2.addEventListener("click", (e) => {
+  domPlayer.select(humanBtn2, computerBtn2, e);
+});
+
+const domPlayer = (function () {
+  function select(element1, element2, e) {
+    let btn = e.currentTarget;
+
+    if (btn.classList.contains("card__button--selected")) return;
+
+    element1.classList.remove("card__button--selected");
+    element2.classList.remove("card__button--selected");
+
+    btn.classList.add("card__button--selected");
+  }
+
+  function mode() {
+    const playerBtn = document.querySelectorAll(".card__button--player");
+
+    let players = [];
+
+    playerBtn.forEach((btn) => {
+      if (btn.classList.contains("card__button--selected")) {
+        players.push(btn.id);
+      }
+    });
+
+    let player1 = players[0],
+      player2 = players[1];
+
+    switch (true) {
+      case player1.includes("human") && player2.includes("human"):
+        return "PvP";
+
+      case player1.includes("computer") && player2.includes("computer"):
+        return "EvE";
+
+      case player1.includes("human") && player2.includes("computer"):
+        return "PvE";
+
+      case player1.includes("computer") && player2.includes("human"):
+        return "EvP";
+
+      default:
+        alert("No mode was selected??!");
+        break;
+    }
+  }
+
+  return {
+    select,
+    mode,
+  };
+})();
+
+// SELECT NAME
+const playerName1 = document.querySelector("#player-name-1"),
+  playerName2 = document.querySelector("#player-name-2");
+
+const playerName = (function () {
+  let name1, name2;
+
+  function get(e) {
+    let input = e.currentTarget;
+    switch (true) {
+      case input.id.includes("1"):
+        name1 = input.value;
+        return name1;
+
+      case input.id.includes("2"):
+        name2 = input.value;
+        return name2;
+    }
+  }
+
+  function status() {
+    return {
+      name1,
+      name2,
+    };
+  }
+
+  return {
+    get,
+    status,
+  };
+})();
+
+playerName1.addEventListener("input", playerName.get);
+playerName2.addEventListener("input", playerName.get);
+
+// START GAME
+
+function startGame() {
+  let { name1, name2 } = playerName.status();
+  let { marker1, marker2 } = marker.status();
+  let mode = domPlayer.mode();
+
+  createGame.domGameboard.show();
+
+  switch (mode) {
+    case "PvP":
+      createGame.PvP(name1, name2, marker1, marker2, "Hi", "Hi");
+      break;
+
+    case "PvE":
+      createGame.PvE(name1, marker1, marker2, "Hi", "Hi");
+      break;
+
+    case "EvE":
+      createGame.EvE(marker1, marker2, "Hi", "Hi");
+      break;
+
+    case "EvP":
+      createGame.PvE(name2, name1, marker2, marker1, "Hi", "Hi");
+      break;
+  }
+}
+
+const startGameBtn = document.querySelector("#start-button");
+
+startGameBtn.addEventListener("click", startGame);
+
+// GAMEBOARD
+// CLICKING SQUARES

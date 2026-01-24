@@ -1,0 +1,233 @@
+// Abstracts (variables, mixins, functions)
+@use "./abstracts/mixins" as m;
+
+// Base / Reset
+@use "./base/reset";
+@use "./base/base";
+
+// Components
+@use "./components/card";
+@use "./components/animations";
+
+body {
+  @include m.flex(column, unset);
+  cursor: crosshair;
+  background: var(--color-accent-muted);
+}
+
+header {
+  @include m.flex(column);
+  @include m.font("Fredoka", var(--font-weight-light), var(--size-font-large));
+  width: 100%;
+  padding: var(--size-smaller);
+  background: var(--color-neutral-dark);
+  color: var(--color-tertiary);
+}
+
+.game-name {
+  @include m.flex(row);
+  gap: var(--size-smaller);
+  & span {
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.2);
+      filter: saturate(2);
+      color: var(--color-tertiary);
+    }
+  }
+}
+
+main {
+  width: 100%;
+}
+
+.character-selection-screen {
+  @include m.flex(column);
+  width: 100%;
+  padding: var(--size-medium);
+  gap: calc(var(--size-small) - 0.5rem);
+  // display: none;
+}
+
+.game-controls {
+  @include m.flex(column);
+  gap: var(--size-smaller);
+
+  &__status {
+    @include m.flex(row);
+    gap: var(--size-smaller);
+    @include m.font(
+      "Poppins",
+      var(--font-weight-regular),
+      var(--size-font-medium)
+    );
+  }
+
+  &__start-button {
+    padding: var(--size-smaller) var(--size-small);
+    border-radius: var(--size-small);
+    border: none;
+    background: var(--color-tertiary);
+    @include m.font("Fredoka", var(--font-weight-medium), 130%);
+    letter-spacing: 0.15rem;
+    text-transform: uppercase;
+    position: relative;
+    color: var(--color-contrast-primary);
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &:active {
+      transform: scale(1);
+    }
+  }
+}
+
+.gameboard {
+  aspect-ratio: 1 / 1;
+  width: min(80vw, calc(20rem + 5vw));
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  justify-content: center;
+  margin-block-end: var(--size-medium);
+
+  &-screen {
+    @include m.flex(column);
+    display: none;
+  }
+
+  &__square {
+    border: calc(var(--size-tiny) + 0.2vw) solid var(--color-tertiary);
+
+    & button {
+      @include m.font("Fredoka", var(--font-weight-bolder), 450%);
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    &:nth-child(1) {
+      border-inline-start: none;
+      border-block-start: none;
+    }
+    &:nth-child(2) {
+      border-block-start: none;
+    }
+    &:nth-child(3) {
+      border-inline-end: none;
+      border-block-start: none;
+    }
+    &:nth-child(4) {
+      border-inline-start: none;
+    }
+    &:nth-child(6) {
+      border-inline-end: none;
+    }
+    &:nth-child(7) {
+      border-inline-start: none;
+      border-block-end: none;
+    }
+    &:nth-child(8) {
+      border-block-end: none;
+    }
+    &:nth-child(9) {
+      border-inline-end: none;
+      border-block-end: none;
+    }
+  }
+
+  &__players {
+    @include m.flex(row, center, space-between);
+    width: 90%;
+    max-width: 100rem;
+    margin: var(--size-small);
+  }
+
+  &__player {
+    width: min(30%, calc(8rem + 4vw));
+    aspect-ratio: 1 / 1;
+    background: var(--color-neutral-mid);
+    border: var(--size-smaller) solid var(--color-accent-border);
+    border-radius: var(--size-medium);
+    position: relative;
+  }
+
+  &__score {
+    position: absolute;
+    top: 40%;
+    z-index: -1;
+    border-radius: var(--size-smaller);
+    background: var(--color-neutral-dark);
+    width: 100%;
+    height: 80%;
+    @include m.flex(row, center, unset);
+    @include m.font("Poppins", var(--font-weight-medium), 300%);
+    color: var(--color-contrast-secondary);
+
+    &-1 {
+      right: -65%;
+      transform: translateY(-50%) skew(-20deg);
+      justify-content: center;
+      padding-inline-start: var(--size-medium);
+
+      & span {
+        transform: skew(20deg);
+      }
+    }
+
+    &-2 {
+      left: -65%;
+      transform: translateY(-50%) skew(20deg);
+      justify-content: center;
+      padding-inline-end: var(--size-medium);
+
+      & span {
+        transform: skew(-20deg);
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 45rem) {
+  .gameboard {
+    &__players {
+      margin-block-end: 0;
+    }
+
+    &__player {
+      border-radius: var(--size-large);
+      border: calc(var(--size-smaller) + 0.25rem) solid
+        var(--color-accent-border);
+    }
+
+    &__square {
+      & button {
+        font-size: 600%;
+      }
+    }
+
+    &__score {
+      width: calc(150% + 5vw);
+      height: 60%;
+
+      &-1 {
+        right: calc(-100% - 5vw);
+      }
+
+      &-2 {
+        left: calc(-100% - 5vw);
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 60rem) {
+  .character-selection-screen {
+    flex-direction: row;
+  }
+}
