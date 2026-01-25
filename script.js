@@ -9,17 +9,19 @@ const player = (function () {
     this.avatar = avatar;
     this.score = startingScore;
     this.gainScore = function () {
-      startingScore++;
+      this.score++;
     };
     this.marker = marker || "x";
+    this.isComputer = false;
   }
   function computer(avatar, marker) {
     this.avatar = avatar || "🤖";
     this.score = startingScore;
     this.gainScore = function () {
-      startingScore++;
+      this.score++;
     };
     this.marker = marker || "o";
+    this.isComputer = true;
   }
   return {
     human,
@@ -36,6 +38,7 @@ const createGame = (function () {
     let gameActive = true;
     let turn = 0;
 
+    // Human Turn
     const squares = document.querySelectorAll(".gameboard__button");
 
     squares.forEach((square, index) => {
@@ -46,22 +49,47 @@ const createGame = (function () {
 
         const currentPlayer = turn % 2 === 0 ? player1 : player2;
 
-        enterMarker(currentPlayer.marker, index, e);
+        if (currentPlayer.isComputer) return;
 
-        winCheck();
-
+        humanTurn(index, currentPlayer.marker);
         turn++;
+        computerTurn();
       });
     });
+    computerTurn();
+    function humanTurn(index, marker) {
+      placeMarker(index, marker);
+    }
 
-    function enterMarker(marker, index, e) {
-      let square = e.currentTarget;
-
+    function placeMarker(index, marker) {
       if (gameboard[index]) return;
-      if (!gameboard[index]) {
-        gameboard[index] = marker;
-        square.textContent = marker;
-      }
+      gameboard[index] = marker;
+      squares[index].textContent = marker;
+      winCheck();
+    }
+
+    function computerTurn() {
+      if (!gameActive) return;
+
+      const currentPlayer = turn % 2 === 0 ? player1 : player2;
+
+      if (!currentPlayer.isComputer) return;
+
+      const availableSquares = gameboard
+        .map((square, index) => (square === undefined ? index : null))
+        .filter((index) => index !== null);
+
+      if (availableSquares.length === 0) return;
+
+      const randomIndex =
+        availableSquares[Math.floor(Math.random() * availableSquares.length)];
+
+      setTimeout(() => {
+        placeMarker(randomIndex, currentPlayer.marker);
+        turn++;
+
+        computerTurn();
+      }, 300);
     }
 
     function winStatus() {
@@ -114,7 +142,8 @@ const createGame = (function () {
     function clearGameboard() {
       gameboard = Array(9).fill(undefined);
       squares.forEach((square) => (square.textContent = ""));
-
+      turn = 0;
+      gameActive = false;
       domGameboard.hide();
     }
   }
@@ -148,22 +177,29 @@ const createGame = (function () {
   }
 
   function PvE(name1, marker1, marker2, avatar1, avatar2) {
-    let computer = player.computer(avatar2, marker2);
-    let player = new player.human(name1, avatar1, marker1);
+    let humanPlayer = new player.human(name1, avatar1, marker1);
+    let computer = new player.computer(avatar2, marker2);
 
-    playGame(player, computer);
+    playGame(humanPlayer, computer);
   }
   function EvE(marker1, marker2, avatar1, avatar2) {
-    let computer1 = player.computer(avatar1, marker1);
-    let computer2 = player.computer(avatar2, marker2);
+    let computer1 = new player.computer(avatar1, marker1);
+    let computer2 = new player.computer(avatar2, marker2);
 
     playGame(computer1, computer2);
+  }
+  function EvP(name2, marker1, marker2, avatar1, avatar2) {
+    let computer = new player.computer(avatar1, marker1);
+    let playerHuman = new player.human(name2, avatar2, marker2);
+
+    playGame(computer, playerHuman);
   }
 
   return {
     PvP,
     PvE,
     EvE,
+    EvP,
     domGameboard,
   };
 })();
@@ -482,7 +518,7 @@ function startGame() {
       break;
 
     case "EvP":
-      createGame.PvE(name2, name1, marker2, marker1, "Hi", "Hi");
+      createGame.EvP(name2, marker1, marker2, "Hi", "Hi");
       break;
   }
 }
