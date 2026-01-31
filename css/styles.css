@@ -407,8 +407,7 @@ main {
   justify-content: center;
   margin-block-end: var(--size-medium);
 }
-.gameboard-screen {
-  display: flex;
+.gameboard__screen {
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -462,78 +461,115 @@ main {
   align-items: center;
   justify-content: space-between;
   width: 90%;
+  padding-inline: 0.5rem;
   max-width: 100rem;
   margin: var(--size-small);
 }
 .gameboard__player {
-  width: min(30%, 8rem + 4vw);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--size-smaller);
+  min-height: 5rem;
+  position: relative;
+  background: var(--color-neutral-dark);
+  color: var(--color-contrast-secondary);
+  padding-block: 0.5rem;
+  z-index: -1;
+  width: calc(9rem + 10vw);
+}
+.gameboard__player-1 {
+  transform: skew(-20deg);
+  align-items: flex-end;
+  padding-inline-end: 0.5rem;
+}
+@media screen and (min-width: 60rem) {
+  .gameboard__player-1 {
+    align-items: flex-start;
+    margin-inline-start: var(--size-large);
+    padding-inline-start: calc(var(--size-large) + 1.5rem);
+  }
+}
+.gameboard__player-2 {
+  transform: skew(20deg);
+  align-items: flex-start;
+  padding-inline-start: 0.5rem;
+}
+@media screen and (min-width: 60rem) {
+  .gameboard__player-2 {
+    align-items: flex-end;
+    margin-inline-end: var(--size-large);
+    padding-inline-end: calc(var(--size-large) + 1.5rem);
+  }
+}
+.gameboard__score {
+  font-size: var(--size-font-small);
+}
+@media screen and (min-width: 60rem) {
+  .gameboard__score {
+    font-size: var(--size-font-medium);
+  }
+}
+.gameboard__score-1 {
+  transform: skew(20deg);
+}
+@media screen and (min-width: 60rem) {
+  .gameboard__score-1 {
+    padding-inline-start: 0.7rem;
+  }
+}
+.gameboard__score-2 {
+  transform: skew(-20deg);
+}
+@media screen and (min-width: 60rem) {
+  .gameboard__score-2 {
+    padding-inline-end: 0.7rem;
+  }
+}
+.gameboard__name {
+  color: var(--color-contrast-secondary);
+  font-size: calc(var(--size-font-medium) - 0.4rem);
+}
+@media screen and (min-width: 60rem) {
+  .gameboard__name {
+    font-size: calc(var(--size-font-large) - 0.4rem);
+  }
+}
+.gameboard__name-1 {
+  transform: skew(20deg);
+  padding-inline-end: 3%;
+}
+.gameboard__name-2 {
+  transform: skew(-20deg);
+  padding-inline-start: 3%;
+}
+.gameboard__avatar {
   aspect-ratio: 1/1;
   background: var(--color-neutral-mid);
   border: var(--size-smaller) solid var(--color-accent-border);
-  border-radius: var(--size-medium);
-  position: relative;
-}
-.gameboard__score {
+  border-radius: var(--size-small);
   position: absolute;
-  top: 40%;
-  z-index: -1;
-  border-radius: var(--size-smaller);
-  background: var(--color-neutral-dark);
-  width: 100%;
-  height: 80%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: unset;
-  font-family: "Poppins", sans-serif;
-  font-weight: var(--font-weight-medium);
-  font-size: 300%;
-  font-style: normal;
-  color: var(--color-contrast-secondary);
+  top: 50%;
+  height: 150%;
+  background-position: 50% -10%;
+  background-repeat: no-repeat;
+  background-size: 50%;
 }
-.gameboard__score-1 {
-  right: -65%;
-  transform: translateY(-50%) skew(-20deg);
-  justify-content: center;
-  padding-inline-start: var(--size-medium);
+.gameboard__avatar-1 {
+  left: -60%;
+  transform: translate(75%, -50%) skew(20deg);
 }
-.gameboard__score-1 span {
-  transform: skew(20deg);
-}
-.gameboard__score-2 {
-  left: -65%;
-  transform: translateY(-50%) skew(20deg);
-  justify-content: center;
-  padding-inline-end: var(--size-medium);
-}
-.gameboard__score-2 span {
-  transform: skew(-20deg);
+.gameboard__avatar-2 {
+  right: -60%;
+  transform: translate(-75%, -50%) skew(-20deg);
 }
 
 @media screen and (min-width: 45rem) {
   .gameboard__players {
     margin-block-end: 0;
   }
-  .gameboard__player {
-    border-radius: var(--size-large);
-    border: calc(var(--size-smaller) + 0.25rem) solid var(--color-accent-border);
-  }
   .gameboard__square button {
     font-size: 600%;
   }
-  .gameboard__score {
-    width: calc(150% + 5vw);
-    height: 60%;
-  }
-  .gameboard__score-1 {
-    right: calc(-100% - 5vw);
-  }
-  .gameboard__score-2 {
-    left: calc(-100% - 5vw);
-  }
 }
-@media screen and (min-width: 60rem) {
-  .character-selection-screen {
-    flex-direction: row;
-  }
-}/*# sourceMappingURL=styles.css.map */

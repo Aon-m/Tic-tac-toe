@@ -16,7 +16,7 @@
     />
 
     <!-- File links -->
-    <link rel="stylesheet" href="./styles/styles.css" />
+    <link rel="stylesheet" href="./css/styles.css" />
     <script defer src="script.js"></script>
 
     <title>Tic Tac Toe</title>
@@ -227,17 +227,24 @@
           </div>
         </div>
       </section>
-      <section class="gameboard-screen">
+      <section class="gameboard__screen">
         <div class="gameboard__players">
           <div class="gameboard__player gameboard__player-1">
-            <div class="gameboard__score gameboard__score-1">
-              <span id="player-score-1">0</span>
+            <div class="gameboard__name gameboard__name-1" id="playing-name-1"></div>
+            <div
+              class="gameboard__score gameboard__score-1"
+              id="playing-score-1"
+            >
             </div>
+            <div class="gameboard__avatar gameboard__avatar-1" id="playing-avatar-1"></div>
           </div>
           <div class="gameboard__player gameboard__player-2">
-            <div class="gameboard__score gameboard__score-2">
-              <span id="player-score-2">0</span>
-            </div>
+            <div class="gameboard__name gameboard__name-2" id="playing-name-2"></div>
+            <div
+              class="gameboard__score gameboard__score-2"
+              id="playing-score-2"
+            ></div>
+            <div class="gameboard__avatar gameboard__avatar-2" id="playing-avatar-2"></div>
           </div>
         </div>
         <div class="gameboard">

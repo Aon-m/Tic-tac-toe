@@ -5,7 +5,7 @@ const player = (function () {
   let startingScore = 0;
 
   function human(name, avatar, marker) {
-    this.name = name;
+    this.name = name || "Player";
     this.avatar = avatar;
     this.score = startingScore;
     this.gainScore = function () {
@@ -15,7 +15,8 @@ const player = (function () {
     this.isComputer = false;
   }
   function computer(avatar, marker) {
-    this.avatar = avatar || "🤖";
+    this.name = "Computer";
+    this.avatar = avatar;
     this.score = startingScore;
     this.gainScore = function () {
       this.score++;
@@ -37,6 +38,11 @@ const createGame = (function () {
 
     let gameActive = true;
     let turn = 0;
+    let round = 1;
+
+    setTimeout(() => {
+      alert(`Round ${round}`);
+    }, 200);
 
     // Human Turn
     const squares = document.querySelectorAll(".gameboard__button");
@@ -56,7 +62,9 @@ const createGame = (function () {
         computerTurn();
       });
     });
+
     computerTurn();
+
     function humanTurn(index, marker) {
       placeMarker(index, marker);
     }
@@ -123,27 +131,84 @@ const createGame = (function () {
     function winCheck() {
       const winner = winStatus();
 
-      if (winner === "draw") {
-        setTimeout(() => {
-          alert("draw");
-        }, 300);
-      } else if (winner) {
-        gameActive = false;
-        setTimeout(() => {
-          alert(`${winner} wins!`);
-        }, 200);
+      switch (true) {
+        case winner === "draw":
+          setTimeout(() => {
+            alert("Draw!");
+            nextRound();
+          }, 200);
+          break;
 
+        case winner && winner !== "draw":
+          if (winner === player1.marker) player1.gainScore();
+          else if (winner === player2.marker) player2.gainScore();
+          updateGame.score();
+          setTimeout(() => {
+            alert(`${winner} wins!`);
+            nextRound();
+          }, 200);
+
+          break;
+      }
+
+      // End game if someone reaches score limit
+      if (player1.score > 2 || player2.score > 2) {
         setTimeout(() => {
-          clearGameboard();
+          endGame();
         }, 300);
       }
     }
+
+    function nextRound() {
+      round++;
+      clearGameboard();
+      gameActive = true;
+      alert(`Round ${round}`);
+
+      setTimeout(() => {
+        // If first player is computer, start computer turn
+        const currentPlayer = turn % 2 === 0 ? player1 : player2;
+        if (currentPlayer.isComputer) computerTurn();
+      }, 500);
+    }
+
+    const updateGame = (function () {
+      function name() {
+        document.querySelector("#playing-name-1").textContent = player1.name;
+        document.querySelector("#playing-name-2").textContent = player2.name;
+      }
+
+      function score() {
+        document.querySelector("#playing-score-1").textContent = player1.score;
+        document.querySelector("#playing-score-2").textContent = player2.score;
+      }
+
+      function avatar() {
+        document.querySelector("#playing-avatar-1").style.backgroundImage =
+          `url(${player1.avatar})`;
+        document.querySelector("#playing-avatar-2").style.backgroundImage =
+          `url(${player2.avatar})`;
+      }
+
+      return {
+        score,
+        name,
+        avatar,
+      };
+    })();
+
+    // Domscore
+    updateGame.name();
+    updateGame.score();
+    updateGame.avatar();
 
     function clearGameboard() {
       gameboard = Array(9).fill(undefined);
       squares.forEach((square) => (square.textContent = ""));
       turn = 0;
-      gameActive = false;
+    }
+
+    function endGame() {
       domGameboard.hide();
     }
   }
@@ -152,7 +217,7 @@ const createGame = (function () {
     const selectionScreen = document.querySelector(
         ".character-selection-screen",
       ),
-      gameboardScreen = document.querySelector(".gameboard-screen");
+      gameboardScreen = document.querySelector(".gameboard__screen");
 
     function show() {
       selectionScreen.style.display = "none";
@@ -240,6 +305,27 @@ const chosenMarker = document.querySelectorAll(".marker");
 chosenMarker.forEach((btn) => {
   btn.addEventListener("click", marker.swap);
 });
+
+// SELECT AVATAR
+const avatar = (function changeMarker() {
+  const domAvatar1 = document.querySelector("#current-preview-1");
+  const domAvatar2 = document.querySelector("#current-preview-2");
+
+  function status() {
+    let avatar1 = domAvatar1.src,
+      avatar2 = domAvatar2.src;
+
+    return {
+      avatar1,
+      avatar2,
+    };
+  }
+
+  return {
+    status,
+  };
+})();
+
 
 // CHANGE CHARACTER
 
@@ -486,12 +572,19 @@ const playerName = (function () {
     };
   }
 
+  function initialize() {
+    name1 = playerName1.value;
+    name2 = playerName2.value;
+  }
+
   return {
     get,
     status,
+    initialize,
   };
 })();
 
+playerName.initialize();
 playerName1.addEventListener("input", playerName.get);
 playerName2.addEventListener("input", playerName.get);
 
@@ -500,25 +593,26 @@ playerName2.addEventListener("input", playerName.get);
 function startGame() {
   let { name1, name2 } = playerName.status();
   let { marker1, marker2 } = marker.status();
+  let { avatar1, avatar2 } = avatar.status();
   let mode = domPlayer.mode();
 
   createGame.domGameboard.show();
 
   switch (mode) {
     case "PvP":
-      createGame.PvP(name1, name2, marker1, marker2, "Hi", "Hi");
+      createGame.PvP(name1, name2, marker1, marker2, avatar1, avatar2);
       break;
 
     case "PvE":
-      createGame.PvE(name1, marker1, marker2, "Hi", "Hi");
+      createGame.PvE(name1, marker1, marker2, avatar1, avatar2);
       break;
 
     case "EvE":
-      createGame.EvE(marker1, marker2, "Hi", "Hi");
+      createGame.EvE(marker1, marker2, avatar1, avatar2);
       break;
 
     case "EvP":
-      createGame.EvP(name2, marker1, marker2, "Hi", "Hi");
+      createGame.EvP(name2, marker1, marker2, avatar1, avatar2);
       break;
   }
 }
@@ -526,6 +620,3 @@ function startGame() {
 const startGameBtn = document.querySelector("#start-button");
 
 startGameBtn.addEventListener("click", startGame);
-
-// GAMEBOARD
-// CLICKING SQUARES
