@@ -14,8 +14,9 @@ const player = (function () {
     this.marker = marker || "x";
     this.isComputer = false;
   }
-  function computer(avatar, marker) {
-    this.name = "Computer";
+
+  function computer(name, avatar, marker) {
+    this.name = name || "Computer";
     this.avatar = avatar;
     this.score = startingScore;
     this.gainScore = function () {
@@ -305,7 +306,7 @@ const createGame = (function () {
       nextRoundDiv.showModal();
 
       if (nextRoundDiv.open) {
-      setTimeout(() => {
+        setTimeout(() => {
           nextRoundDiv.close();
           showRound();
           nextRound();
@@ -342,20 +343,20 @@ const createGame = (function () {
     playGame(player1, player2);
   }
 
-  function PvE(name1, marker1, marker2, avatar1, avatar2) {
+  function PvE(name1, name2, marker1, marker2, avatar1, avatar2) {
     let humanPlayer = new player.human(name1, avatar1, marker1);
-    let computer = new player.computer(avatar2, marker2);
+    let computer = new player.computer(name2, avatar2, marker2);
 
     playGame(humanPlayer, computer);
   }
-  function EvE(marker1, marker2, avatar1, avatar2) {
-    let computer1 = new player.computer(avatar1, marker1);
-    let computer2 = new player.computer(avatar2, marker2);
+  function EvE(name1, name2, marker1, marker2, avatar1, avatar2) {
+    let computer1 = new player.computer(name1, avatar1, marker1);
+    let computer2 = new player.computer(name2, avatar2, marker2);
 
     playGame(computer1, computer2);
   }
-  function EvP(name2, marker1, marker2, avatar1, avatar2) {
-    let computer = new player.computer(avatar1, marker1);
+  function EvP(name1, name2, marker1, marker2, avatar1, avatar2) {
+    let computer = new player.computer(name1, avatar1, marker1);
     let playerHuman = new player.human(name2, avatar2, marker2);
 
     playGame(computer, playerHuman);
@@ -704,15 +705,15 @@ function startGame() {
       break;
 
     case "PvE":
-      createGame.PvE(name1, marker1, marker2, avatar1, avatar2);
+      createGame.PvE(name1, name2, marker1, marker2, avatar1, avatar2);
       break;
 
     case "EvE":
-      createGame.EvE(marker1, marker2, avatar1, avatar2);
+      createGame.EvE(name1, name2, marker1, marker2, avatar1, avatar2);
       break;
 
     case "EvP":
-      createGame.EvP(name2, marker1, marker2, avatar1, avatar2);
+      createGame.EvP(name1, name2, marker1, marker2, avatar1, avatar2);
       break;
   }
 }
