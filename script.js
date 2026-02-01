@@ -47,13 +47,9 @@ const createGame = (function () {
     showRound();
 
     const closeGameBtn = document.querySelector(".gameboard__close-game-btn");
-    closeGameBtn.addEventListener("click", () => {
-      endGame();
-    });
+    closeGameBtn.addEventListener("click", endGame);
     const endGameBtn = document.querySelector("#end-game-btn");
-    endGameBtn.addEventListener("click", () => {
-      endGame();
-    });
+    endGameBtn.addEventListener("click", endGame);
     const nextRoundBtn = document.querySelector("#next-round-btn");
     nextRoundBtn.addEventListener("click", () => {
       showRound();
@@ -77,7 +73,7 @@ const createGame = (function () {
         turn++;
 
         setTimeout(() => {
-          computerTurn();
+          if (gameActive) computerTurn();
         }, 100);
       });
     });
@@ -243,8 +239,14 @@ const createGame = (function () {
     }
 
     function endGame() {
+      const nextRoundDiv = document.querySelector(".gameboard__next-round");
+      const roundDiv = document.querySelector(".gameboard__round");
+
       clearGameboard();
       domGameboard.hide();
+      roundDiv.close();
+      nextRoundDiv.close();
+
       gameActive = false;
     }
 
@@ -267,19 +269,19 @@ const createGame = (function () {
         humanCanClick = true;
 
         setTimeout(() => {
-          computerTurn();
+          if (gameActive) computerTurn();
         }, 200);
       }, 2000);
     }
 
     function showNextRound(winner) {
       const nextRoundDiv = document.querySelector(".gameboard__next-round");
+      const status = document.querySelector(".gameboard__status");
+
       gameActive = false;
       humanCanClick = false;
-      clearGameboard();
-      round++;
 
-      const status = document.querySelector(".gameboard__status");
+      round++;
 
       if (player1.score > 2 || player2.score > 2) {
         if (player1.score > 2) {
@@ -288,10 +290,14 @@ const createGame = (function () {
           status.textContent = `${player2.name} beats ${player1.name}!`;
         }
 
+        nextRoundDiv.showModal();
+
         setTimeout(() => {
           nextRoundDiv.close();
           endGame();
         }, 3000);
+
+        return;
       }
 
       switch (true) {
@@ -304,14 +310,6 @@ const createGame = (function () {
       }
 
       nextRoundDiv.showModal();
-
-      if (nextRoundDiv.open) {
-        setTimeout(() => {
-          nextRoundDiv.close();
-          showRound();
-          nextRound();
-        }, 5000);
-      }
     }
   }
 
