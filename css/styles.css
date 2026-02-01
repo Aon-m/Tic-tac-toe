@@ -620,12 +620,13 @@ main {
   text-transform: uppercase;
   text-align: center;
   color: var(--color-contrast-secondary);
-  display: flex;
   align-items: center;
   justify-content: center;
 }
+.gameboard__round {
+  padding: var(--size-small) var(--size-medium);
+}
 .gameboard__next-round {
-  display: block;
   padding: var(--size-small);
   overflow: hidden;
 }

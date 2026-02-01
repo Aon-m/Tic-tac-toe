@@ -320,13 +320,15 @@ main {
     text-transform: uppercase;
     text-align: center;
     color: var(--color-contrast-secondary);
-    display: flex;
     align-items: center;
     justify-content: center;
   }
 
+  &__round {
+    padding: var(--size-small) var(--size-medium);
+  }
+
   &__next-round {
-    display: block;
     padding: var(--size-small);
     overflow: hidden;
 
