@@ -395,6 +395,8 @@ main {
   text-transform: uppercase;
   position: relative;
   color: var(--color-contrast-primary);
+  cursor: pointer;
+  transition: 200ms ease;
 }
 .game-controls__start-button:hover {
   transform: scale(1.1);
@@ -407,16 +409,16 @@ main {
   aspect-ratio: 1/1;
   width: min(80vw, 20rem + 5vw);
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
   justify-content: center;
   margin-block-end: var(--size-medium);
 }
 .gameboard__screen {
+  display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  display: none;
   position: relative;
 }
 .gameboard__square {
@@ -603,7 +605,7 @@ main {
   transform: translateX(-50%) scale(1);
   transition: 200ms ease;
 }
-.gameboard__round {
+.gameboard__round, .gameboard__next-round {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -615,31 +617,17 @@ main {
   font-size: 300%;
   font-style: normal;
   letter-spacing: 0.15rem;
-  padding: var(--size-small) var(--size-large);
   text-transform: uppercase;
   text-align: center;
+  color: var(--color-contrast-secondary);
+  display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-contrast-secondary);
 }
 .gameboard__next-round {
   display: block;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: var(--size-small);
-  border: none;
-  background: var(--color-tertiary);
-  font-family: "Fredoka", sans-serif;
-  font-weight: var(--font-weight-medium);
-  font-size: 300%;
-  font-style: normal;
-  letter-spacing: 0.15rem;
   padding: var(--size-small);
   overflow: hidden;
-  text-transform: uppercase;
-  text-align: center;
-  color: var(--color-contrast-secondary);
 }
 .gameboard__next-round .gameboard__players {
   transform: scale(0.8);
@@ -719,12 +707,10 @@ main {
 .gameboard__controls__button:nth-of-type(2) {
   background: var(--color-secondary);
 }
-
 .gameboard__round::backdrop {
   background: var(--color-contrast-primary);
   opacity: 0.5;
 }
-
 .gameboard__next-round::backdrop {
   background: var(--color-contrast-primary);
   opacity: 0.6;

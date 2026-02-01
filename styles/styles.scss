@@ -1,14 +1,14 @@
-// Abstracts (variables, mixins, functions)
 @use "./abstracts/mixins" as m;
 
-// Base / Reset
 @use "./base/reset";
+
 @use "./base/base";
 
-// Components
 @use "./components/card";
+
 @use "./components/animations";
 
+// Global Styles
 body {
   @include m.flex(column, unset);
   cursor: crosshair;
@@ -17,6 +17,7 @@ body {
 
 header {
   @include m.flex(column);
+
   @include m.font("Fredoka", var(--font-weight-light), var(--size-font-large));
   width: 100%;
   padding: var(--size-smaller);
@@ -27,7 +28,8 @@ header {
 .game-name {
   @include m.flex(row);
   gap: var(--size-smaller);
-  & span {
+
+  span {
     cursor: pointer;
 
     &:hover {
@@ -42,18 +44,19 @@ main {
   width: 100%;
 }
 
+// Character Selection
 .character-selection-screen {
   @include m.flex(column);
   width: 100%;
   padding: var(--size-medium);
   gap: calc(var(--size-small) - 0.5rem);
-  // display: none;
 
   @media screen and (min-width: 60rem) {
     flex-direction: row;
   }
 }
 
+// Game Controls
 .game-controls {
   @include m.flex(column);
   gap: var(--size-smaller);
@@ -61,6 +64,7 @@ main {
   &__status {
     @include m.flex(row);
     gap: var(--size-smaller);
+
     @include m.font(
       "Poppins",
       var(--font-weight-regular),
@@ -73,11 +77,14 @@ main {
     border-radius: var(--size-small);
     border: none;
     background: var(--color-tertiary);
+
     @include m.font("Fredoka", var(--font-weight-medium), 130%);
     letter-spacing: 0.15rem;
     text-transform: uppercase;
     position: relative;
     color: var(--color-contrast-primary);
+    cursor: pointer;
+    transition: 200ms ease;
 
     &:hover {
       transform: scale(1.1);
@@ -89,27 +96,28 @@ main {
   }
 }
 
+// Gameboard
 .gameboard {
   aspect-ratio: 1 / 1;
   width: min(80vw, calc(20rem + 5vw));
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
   justify-content: center;
   margin-block-end: var(--size-medium);
 
   &__screen {
+    display: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    display: none;
     position: relative;
   }
 
   &__square {
     border: calc(var(--size-tiny) + 0.2vw) solid var(--color-tertiary);
 
-    & button {
+    button {
       @include m.font("Fredoka", var(--font-weight-bolder), 450%);
       width: 100%;
       aspect-ratio: 1 / 1;
@@ -122,26 +130,33 @@ main {
       border-inline-start: none;
       border-block-start: none;
     }
+
     &:nth-child(2) {
       border-block-start: none;
     }
+
     &:nth-child(3) {
       border-inline-end: none;
       border-block-start: none;
     }
+
     &:nth-child(4) {
       border-inline-start: none;
     }
+
     &:nth-child(6) {
       border-inline-end: none;
     }
+
     &:nth-child(7) {
       border-inline-start: none;
       border-block-end: none;
     }
+
     &:nth-child(8) {
       border-block-end: none;
     }
+
     &:nth-child(9) {
       border-inline-end: none;
       border-block-end: none;
@@ -210,6 +225,7 @@ main {
         padding-inline-start: 0.7rem;
       }
     }
+
     &-2 {
       transform: skew(-20deg);
 
@@ -231,6 +247,7 @@ main {
       color: var(--color-primary);
       padding-inline-end: 3%;
     }
+
     &-2 {
       transform: skew(-20deg);
       color: var(--color-secondary);
@@ -254,11 +271,13 @@ main {
       left: -60%;
       transform: translate(75%, -50%) skew(20deg);
     }
+
     &-2 {
       right: -60%;
       transform: translate(-75%, -50%) skew(-20deg);
     }
   }
+
   &__close-game-btn {
     position: absolute;
     top: 0;
@@ -268,6 +287,7 @@ main {
     border-radius: 0 0 var(--size-small) var(--size-small);
     border: none;
     background: var(--color-tertiary);
+
     @include m.font("Fredoka", var(--font-weight-medium), 130%);
     letter-spacing: 0.15rem;
     text-transform: uppercase;
@@ -285,37 +305,30 @@ main {
       transition: 200ms ease;
     }
   }
-  &__round {
+
+  &__round,
+  &__next-round {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: var(--size-small);
     border: none;
     background: var(--color-tertiary);
+
     @include m.font("Fredoka", var(--font-weight-medium), 300%);
     letter-spacing: 0.15rem;
-    padding: var(--size-small) var(--size-large);
     text-transform: uppercase;
     text-align: center;
+    color: var(--color-contrast-secondary);
+    display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--color-contrast-secondary);
   }
+
   &__next-round {
     display: block;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: var(--size-small);
-    border: none;
-    background: var(--color-tertiary);
-    @include m.font("Fredoka", var(--font-weight-medium), 300%);
-    letter-spacing: 0.15rem;
     padding: var(--size-small);
     overflow: hidden;
-    text-transform: uppercase;
-    text-align: center;
-    color: var(--color-contrast-secondary);
 
     .gameboard__players {
       transform: scale(0.8);
@@ -335,6 +348,7 @@ main {
           padding-inline-start: var(--size-medium);
         }
       }
+
       &-2 {
         @media screen and (min-width: 60rem) {
           margin-inline-end: var(--size-medium);
@@ -352,6 +366,7 @@ main {
           left: -65%;
         }
       }
+
       &-2 {
         right: -80%;
         transform: translate(-75%, -50%) skew(-20deg);
@@ -362,14 +377,17 @@ main {
       }
     }
   }
+
   &__controls {
     @include m.flex(row);
     gap: var(--size-medium);
     margin-block-start: 3rem;
+
     &__button {
       padding: var(--size-smaller) var(--size-small);
       border-radius: var(--size-small);
       border: none;
+
       @include m.font(
         "Fredoka",
         var(--font-weight-medium),
@@ -395,32 +413,34 @@ main {
       &:first-of-type {
         background: var(--color-primary);
       }
+
       &:nth-of-type(2) {
         background: var(--color-secondary);
       }
     }
   }
+
+  &__round::backdrop {
+    background: var(--color-contrast-primary);
+    opacity: 0.5;
+  }
+
+  &__next-round::backdrop {
+    background: var(--color-contrast-primary);
+    opacity: 0.6;
+  }
 }
 
-.gameboard__round::backdrop {
-  background: var(--color-contrast-primary);
-  opacity: 0.5;
-}
-
-.gameboard__next-round::backdrop {
-  background: var(--color-contrast-primary);
-  opacity: 0.6;
-}
+// Media Queries
 
 @media screen and (min-width: 45rem) {
   .gameboard {
     &__players {
       margin-block-end: 0;
     }
-    &__square {
-      & button {
-        font-size: 600%;
-      }
+
+    &__square button {
+      font-size: 600%;
     }
   }
 }
