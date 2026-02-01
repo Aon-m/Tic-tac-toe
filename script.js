@@ -36,34 +36,50 @@ const createGame = (function () {
   function playGame(player1, player2) {
     let gameboard = Array(9).fill(undefined);
 
-    let gameActive = true;
-    let turn = 0;
     let round = 1;
+    let turn = (round - 1) % 2;
 
-    setTimeout(() => {
-      alert(`Round ${round}`);
-    }, 200);
+    let gameActive = true;
+    let humanCanClick = true;
+    let computerIsMoving = false;
+
+    showRound();
+
+    const closeGameBtn = document.querySelector(".gameboard__close-game-btn");
+    closeGameBtn.addEventListener("click", () => {
+      endGame();
+    });
+    const endGameBtn = document.querySelector("#end-game-btn");
+    endGameBtn.addEventListener("click", () => {
+      endGame();
+    });
+    const nextRoundBtn = document.querySelector("#next-round-btn");
+    nextRoundBtn.addEventListener("click", () => {
+      showRound();
+      nextRound();
+    });
 
     // Human Turn
     const squares = document.querySelectorAll(".gameboard__button");
 
     squares.forEach((square, index) => {
       square.addEventListener("click", (e) => {
+        if (gameboard[index] || !humanCanClick) return;
         if (!gameActive) return;
-
-        if (gameboard[index]) return;
 
         const currentPlayer = turn % 2 === 0 ? player1 : player2;
 
         if (currentPlayer.isComputer) return;
 
+        humanCanClick = false;
         humanTurn(index, currentPlayer.marker);
         turn++;
-        computerTurn();
+
+        setTimeout(() => {
+          computerTurn();
+        }, 100);
       });
     });
-
-    computerTurn();
 
     function humanTurn(index, marker) {
       placeMarker(index, marker);
@@ -77,7 +93,7 @@ const createGame = (function () {
     }
 
     function computerTurn() {
-      if (!gameActive) return;
+      if (!gameActive || computerIsMoving) return;
 
       const currentPlayer = turn % 2 === 0 ? player1 : player2;
 
@@ -87,17 +103,29 @@ const createGame = (function () {
         .map((square, index) => (square === undefined ? index : null))
         .filter((index) => index !== null);
 
-      if (availableSquares.length === 0) return;
+      if (availableSquares.length === 0) {
+        humanCanClick = true;
+        return;
+      }
 
       const randomIndex =
         availableSquares[Math.floor(Math.random() * availableSquares.length)];
 
+      computerIsMoving = true;
+
       setTimeout(() => {
         placeMarker(randomIndex, currentPlayer.marker);
         turn++;
+        computerIsMoving = false;
 
-        computerTurn();
-      }, 300);
+        if (player1.isComputer && player2.isComputer) {
+          setTimeout(() => {
+            computerTurn();
+          }, 50);
+        } else {
+          humanCanClick = true;
+        }
+      }, 500);
     }
 
     function winStatus() {
@@ -122,8 +150,7 @@ const createGame = (function () {
         }
       }
 
-      if (!gameboard.includes(undefined) && gameboard.length == 9)
-        return "draw";
+      if (!gameboard.includes(undefined)) return "draw";
 
       return false;
     }
@@ -131,62 +158,66 @@ const createGame = (function () {
     function winCheck() {
       const winner = winStatus();
 
-      switch (true) {
-        case winner === "draw":
-          setTimeout(() => {
-            alert("Draw!");
-            nextRound();
-          }, 200);
-          break;
-
-        case winner && winner !== "draw":
-          if (winner === player1.marker) player1.gainScore();
-          else if (winner === player2.marker) player2.gainScore();
-          updateGame.score();
-          setTimeout(() => {
-            alert(`${winner} wins!`);
-            nextRound();
-          }, 200);
-
-          break;
+      if (winner === "draw") {
+        gameActive = false;
+        setTimeout(() => {
+          showNextRound("draw");
+        }, 200);
+        return;
       }
 
-      // End game if someone reaches score limit
-      if (player1.score > 2 || player2.score > 2) {
+      if (winner === player1.marker) {
+        player1.gainScore();
+        updateGame.score();
+        gameActive = false;
         setTimeout(() => {
-          endGame();
-        }, 300);
+          showNextRound(player1.name);
+        }, 200);
+        return;
+      }
+
+      if (winner === player2.marker) {
+        player2.gainScore();
+        updateGame.score();
+        gameActive = false;
+        setTimeout(() => {
+          showNextRound(player2.name);
+        }, 200);
+        return;
       }
     }
 
     function nextRound() {
-      round++;
       clearGameboard();
       gameActive = true;
-      alert(`Round ${round}`);
-
-      setTimeout(() => {
-        // If first player is computer, start computer turn
-        const currentPlayer = turn % 2 === 0 ? player1 : player2;
-        if (currentPlayer.isComputer) computerTurn();
-      }, 500);
     }
 
     const updateGame = (function () {
       function name() {
         document.querySelector("#playing-name-1").textContent = player1.name;
         document.querySelector("#playing-name-2").textContent = player2.name;
+
+        document.querySelector("#played-name-1").textContent = player1.name;
+        document.querySelector("#played-name-2").textContent = player2.name;
       }
 
       function score() {
         document.querySelector("#playing-score-1").textContent = player1.score;
         document.querySelector("#playing-score-2").textContent = player2.score;
+
+        document.querySelector("#played-score-1").textContent = player1.score;
+        document.querySelector("#played-score-2").textContent = player2.score;
       }
 
       function avatar() {
         document.querySelector("#playing-avatar-1").style.backgroundImage =
           `url(${player1.avatar})`;
         document.querySelector("#playing-avatar-2").style.backgroundImage =
+          `url(${player2.avatar})`;
+
+        document.querySelector("#played-avatar-1").style.backgroundImage =
+          `url(${player1.avatar})`;
+        document.querySelector("#played-avatar-2").style.backgroundImage =
           `url(${player2.avatar})`;
       }
 
@@ -205,11 +236,81 @@ const createGame = (function () {
     function clearGameboard() {
       gameboard = Array(9).fill(undefined);
       squares.forEach((square) => (square.textContent = ""));
-      turn = 0;
+      turn = (round - 1) % 2;
+      humanCanClick = true;
+      computerIsMoving = false;
     }
 
     function endGame() {
+      clearGameboard();
       domGameboard.hide();
+      gameActive = false;
+    }
+
+    function showRound() {
+      humanCanClick = false;
+
+      const nextRoundDiv = document.querySelector(".gameboard__next-round");
+
+      nextRoundDiv.close();
+
+      const roundDiv = document.querySelector(".gameboard__round");
+      gameActive = false;
+
+      roundDiv.textContent = `Round ${round}`;
+      roundDiv.showModal();
+
+      setTimeout(() => {
+        roundDiv.close();
+        gameActive = true;
+        humanCanClick = true;
+
+        setTimeout(() => {
+          computerTurn();
+        }, 200);
+      }, 2000);
+    }
+
+    function showNextRound(winner) {
+      const nextRoundDiv = document.querySelector(".gameboard__next-round");
+      gameActive = false;
+      humanCanClick = false;
+      clearGameboard();
+      round++;
+
+      const status = document.querySelector(".gameboard__status");
+
+      if (player1.score > 2 || player2.score > 2) {
+        if (player1.score > 2) {
+          status.textContent = `${player1.name} beats ${player2.name}!`;
+        } else if (player2.score > 2) {
+          status.textContent = `${player2.name} beats ${player1.name}!`;
+        }
+
+        setTimeout(() => {
+          nextRoundDiv.close();
+          endGame();
+        }, 3000);
+      }
+
+      switch (true) {
+        case winner === "draw":
+          status.textContent = `Draw!`;
+          break;
+
+        default:
+          status.textContent = `${winner} wins!`;
+      }
+
+      nextRoundDiv.showModal();
+
+      if (nextRoundDiv.open) {
+      setTimeout(() => {
+          nextRoundDiv.close();
+          showRound();
+          nextRound();
+        }, 5000);
+      }
     }
   }
 
@@ -325,7 +426,6 @@ const avatar = (function changeMarker() {
     status,
   };
 })();
-
 
 // CHANGE CHARACTER
 

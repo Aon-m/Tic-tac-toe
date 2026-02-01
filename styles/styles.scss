@@ -48,6 +48,10 @@ main {
   padding: var(--size-medium);
   gap: calc(var(--size-small) - 0.5rem);
   // display: none;
+
+  @media screen and (min-width: 60rem) {
+    flex-direction: row;
+  }
 }
 
 .game-controls {
@@ -99,6 +103,7 @@ main {
     align-items: center;
     justify-content: center;
     display: none;
+    position: relative;
   }
 
   &__square {
@@ -162,6 +167,10 @@ main {
     z-index: -1;
     width: calc(9rem + 10vw);
 
+    @media screen and (min-width: 60rem) {
+      width: calc(12rem + 10vw);
+    }
+
     &-1 {
       transform: skew(-20deg);
       align-items: flex-end;
@@ -211,7 +220,6 @@ main {
   }
 
   &__name {
-    color: var(--color-contrast-secondary);
     font-size: calc(var(--size-font-medium) - 0.4rem);
 
     @media screen and (min-width: 60rem) {
@@ -220,12 +228,12 @@ main {
 
     &-1 {
       transform: skew(20deg);
-
+      color: var(--color-primary);
       padding-inline-end: 3%;
     }
     &-2 {
       transform: skew(-20deg);
-
+      color: var(--color-secondary);
       padding-inline-start: 3%;
     }
   }
@@ -251,6 +259,157 @@ main {
       transform: translate(-75%, -50%) skew(-20deg);
     }
   }
+  &__close-game-btn {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0 var(--size-small) 0.25rem;
+    border-radius: 0 0 var(--size-small) var(--size-small);
+    border: none;
+    background: var(--color-tertiary);
+    @include m.font("Fredoka", var(--font-weight-medium), 130%);
+    letter-spacing: 0.15rem;
+    text-transform: uppercase;
+    color: var(--color-contrast-secondary);
+    cursor: pointer;
+    transition: 500ms ease;
+
+    &:hover {
+      transform: translateX(-50%) scale(1.1);
+      transition: 200ms ease;
+    }
+
+    &:active {
+      transform: translateX(-50%) scale(1);
+      transition: 200ms ease;
+    }
+  }
+  &__round {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: var(--size-small);
+    border: none;
+    background: var(--color-tertiary);
+    @include m.font("Fredoka", var(--font-weight-medium), 300%);
+    letter-spacing: 0.15rem;
+    padding: var(--size-small) var(--size-large);
+    text-transform: uppercase;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-contrast-secondary);
+  }
+  &__next-round {
+    display: block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: var(--size-small);
+    border: none;
+    background: var(--color-tertiary);
+    @include m.font("Fredoka", var(--font-weight-medium), 300%);
+    letter-spacing: 0.15rem;
+    padding: var(--size-small);
+    overflow: hidden;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--color-contrast-secondary);
+
+    .gameboard__players {
+      transform: scale(0.8);
+      width: 100%;
+      gap: var(--size-medium);
+      margin: 0;
+
+      @media screen and (min-width: 60rem) {
+        gap: var(--size-large);
+      }
+    }
+
+    .gameboard__player {
+      &-1 {
+        @media screen and (min-width: 60rem) {
+          margin-inline-start: var(--size-medium);
+          padding-inline-start: var(--size-medium);
+        }
+      }
+      &-2 {
+        @media screen and (min-width: 60rem) {
+          margin-inline-end: var(--size-medium);
+          padding-inline-end: var(--size-medium);
+        }
+      }
+    }
+
+    .gameboard__avatar {
+      &-1 {
+        left: -80%;
+        transform: translate(75%, -50%) skew(20deg);
+
+        @media screen and (min-width: 60rem) {
+          left: -65%;
+        }
+      }
+      &-2 {
+        right: -80%;
+        transform: translate(-75%, -50%) skew(-20deg);
+
+        @media screen and (min-width: 60rem) {
+          right: -65%;
+        }
+      }
+    }
+  }
+  &__controls {
+    @include m.flex(row);
+    gap: var(--size-medium);
+    margin-block-start: 3rem;
+    &__button {
+      padding: var(--size-smaller) var(--size-small);
+      border-radius: var(--size-small);
+      border: none;
+      @include m.font(
+        "Fredoka",
+        var(--font-weight-medium),
+        var(--size-font-small)
+      );
+      letter-spacing: 0.15rem;
+      text-transform: uppercase;
+      position: relative;
+      color: var(--color-contrast-primary);
+      cursor: pointer;
+      transition: 500ms ease;
+
+      &:hover {
+        transform: scale(1.1);
+        transition: 200ms ease;
+      }
+
+      &:active {
+        transform: scale(1);
+        transition: 200ms ease;
+      }
+
+      &:first-of-type {
+        background: var(--color-primary);
+      }
+      &:nth-of-type(2) {
+        background: var(--color-secondary);
+      }
+    }
+  }
+}
+
+.gameboard__round::backdrop {
+  background: var(--color-contrast-primary);
+  opacity: 0.5;
+}
+
+.gameboard__next-round::backdrop {
+  background: var(--color-contrast-primary);
+  opacity: 0.6;
 }
 
 @media screen and (min-width: 45rem) {

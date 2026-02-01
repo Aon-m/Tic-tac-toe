@@ -358,6 +358,11 @@ main {
   padding: var(--size-medium);
   gap: calc(var(--size-small) - 0.5rem);
 }
+@media screen and (min-width: 60rem) {
+  .character-selection-screen {
+    flex-direction: row;
+  }
+}
 
 .game-controls {
   display: flex;
@@ -412,6 +417,7 @@ main {
   align-items: center;
   justify-content: center;
   display: none;
+  position: relative;
 }
 .gameboard__square {
   border: calc(var(--size-tiny) + 0.2vw) solid var(--color-tertiary);
@@ -479,6 +485,11 @@ main {
   z-index: -1;
   width: calc(9rem + 10vw);
 }
+@media screen and (min-width: 60rem) {
+  .gameboard__player {
+    width: calc(12rem + 10vw);
+  }
+}
 .gameboard__player-1 {
   transform: skew(-20deg);
   align-items: flex-end;
@@ -528,7 +539,6 @@ main {
   }
 }
 .gameboard__name {
-  color: var(--color-contrast-secondary);
   font-size: calc(var(--size-font-medium) - 0.4rem);
 }
 @media screen and (min-width: 60rem) {
@@ -538,10 +548,12 @@ main {
 }
 .gameboard__name-1 {
   transform: skew(20deg);
+  color: var(--color-primary);
   padding-inline-end: 3%;
 }
 .gameboard__name-2 {
   transform: skew(-20deg);
+  color: var(--color-secondary);
   padding-inline-start: 3%;
 }
 .gameboard__avatar {
@@ -563,6 +575,159 @@ main {
 .gameboard__avatar-2 {
   right: -60%;
   transform: translate(-75%, -50%) skew(-20deg);
+}
+.gameboard__close-game-btn {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0 var(--size-small) 0.25rem;
+  border-radius: 0 0 var(--size-small) var(--size-small);
+  border: none;
+  background: var(--color-tertiary);
+  font-family: "Fredoka", sans-serif;
+  font-weight: var(--font-weight-medium);
+  font-size: 130%;
+  font-style: normal;
+  letter-spacing: 0.15rem;
+  text-transform: uppercase;
+  color: var(--color-contrast-secondary);
+  cursor: pointer;
+  transition: 500ms ease;
+}
+.gameboard__close-game-btn:hover {
+  transform: translateX(-50%) scale(1.1);
+  transition: 200ms ease;
+}
+.gameboard__close-game-btn:active {
+  transform: translateX(-50%) scale(1);
+  transition: 200ms ease;
+}
+.gameboard__round {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: var(--size-small);
+  border: none;
+  background: var(--color-tertiary);
+  font-family: "Fredoka", sans-serif;
+  font-weight: var(--font-weight-medium);
+  font-size: 300%;
+  font-style: normal;
+  letter-spacing: 0.15rem;
+  padding: var(--size-small) var(--size-large);
+  text-transform: uppercase;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-contrast-secondary);
+}
+.gameboard__next-round {
+  display: block;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: var(--size-small);
+  border: none;
+  background: var(--color-tertiary);
+  font-family: "Fredoka", sans-serif;
+  font-weight: var(--font-weight-medium);
+  font-size: 300%;
+  font-style: normal;
+  letter-spacing: 0.15rem;
+  padding: var(--size-small);
+  overflow: hidden;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--color-contrast-secondary);
+}
+.gameboard__next-round .gameboard__players {
+  transform: scale(0.8);
+  width: 100%;
+  gap: var(--size-medium);
+  margin: 0;
+}
+@media screen and (min-width: 60rem) {
+  .gameboard__next-round .gameboard__players {
+    gap: var(--size-large);
+  }
+}
+@media screen and (min-width: 60rem) {
+  .gameboard__next-round .gameboard__player-1 {
+    margin-inline-start: var(--size-medium);
+    padding-inline-start: var(--size-medium);
+  }
+}
+@media screen and (min-width: 60rem) {
+  .gameboard__next-round .gameboard__player-2 {
+    margin-inline-end: var(--size-medium);
+    padding-inline-end: var(--size-medium);
+  }
+}
+.gameboard__next-round .gameboard__avatar-1 {
+  left: -80%;
+  transform: translate(75%, -50%) skew(20deg);
+}
+@media screen and (min-width: 60rem) {
+  .gameboard__next-round .gameboard__avatar-1 {
+    left: -65%;
+  }
+}
+.gameboard__next-round .gameboard__avatar-2 {
+  right: -80%;
+  transform: translate(-75%, -50%) skew(-20deg);
+}
+@media screen and (min-width: 60rem) {
+  .gameboard__next-round .gameboard__avatar-2 {
+    right: -65%;
+  }
+}
+.gameboard__controls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--size-medium);
+  margin-block-start: 3rem;
+}
+.gameboard__controls__button {
+  padding: var(--size-smaller) var(--size-small);
+  border-radius: var(--size-small);
+  border: none;
+  font-family: "Fredoka", sans-serif;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--size-font-small);
+  font-style: normal;
+  letter-spacing: 0.15rem;
+  text-transform: uppercase;
+  position: relative;
+  color: var(--color-contrast-primary);
+  cursor: pointer;
+  transition: 500ms ease;
+}
+.gameboard__controls__button:hover {
+  transform: scale(1.1);
+  transition: 200ms ease;
+}
+.gameboard__controls__button:active {
+  transform: scale(1);
+  transition: 200ms ease;
+}
+.gameboard__controls__button:first-of-type {
+  background: var(--color-primary);
+}
+.gameboard__controls__button:nth-of-type(2) {
+  background: var(--color-secondary);
+}
+
+.gameboard__round::backdrop {
+  background: var(--color-contrast-primary);
+  opacity: 0.5;
+}
+
+.gameboard__next-round::backdrop {
+  background: var(--color-contrast-primary);
+  opacity: 0.6;
 }
 
 @media screen and (min-width: 45rem) {

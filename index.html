@@ -228,23 +228,37 @@
         </div>
       </section>
       <section class="gameboard__screen">
+        <button class="gameboard__close-game-btn">
+          &times;
+        </button>
         <div class="gameboard__players">
           <div class="gameboard__player gameboard__player-1">
-            <div class="gameboard__name gameboard__name-1" id="playing-name-1"></div>
+            <div
+              class="gameboard__name gameboard__name-1"
+              id="playing-name-1"
+            ></div>
             <div
               class="gameboard__score gameboard__score-1"
               id="playing-score-1"
-            >
-            </div>
-            <div class="gameboard__avatar gameboard__avatar-1" id="playing-avatar-1"></div>
+            ></div>
+            <div
+              class="gameboard__avatar gameboard__avatar-1"
+              id="playing-avatar-1"
+            ></div>
           </div>
           <div class="gameboard__player gameboard__player-2">
-            <div class="gameboard__name gameboard__name-2" id="playing-name-2"></div>
+            <div
+              class="gameboard__name gameboard__name-2"
+              id="playing-name-2"
+            ></div>
             <div
               class="gameboard__score gameboard__score-2"
               id="playing-score-2"
             ></div>
-            <div class="gameboard__avatar gameboard__avatar-2" id="playing-avatar-2"></div>
+            <div
+              class="gameboard__avatar gameboard__avatar-2"
+              id="playing-avatar-2"
+            ></div>
           </div>
         </div>
         <div class="gameboard">
@@ -276,6 +290,54 @@
             <button class="gameboard__button" id="square-9"></button>
           </div>
         </div>
+        <dialog class="gameboard__round">
+          <p class="gameboard__round-info"></p>
+        </dialog>
+        <dialog class="gameboard__next-round">
+          <p class="gameboard__status"></p>
+          <div class="gameboard__players">
+            <div class="gameboard__player gameboard__player-1">
+              <div
+                class="gameboard__name gameboard__name-1"
+                id="played-name-1"
+              ></div>
+              <div
+                class="gameboard__score gameboard__score-1"
+                id="played-score-1"
+              ></div>
+              <div
+                class="gameboard__avatar gameboard__avatar-1"
+                id="played-avatar-1"
+              ></div>
+            </div>
+            <div class="gameboard__player gameboard__player-2">
+              <div
+                class="gameboard__name gameboard__name-2"
+                id="played-name-2"
+              ></div>
+              <div
+                class="gameboard__score gameboard__score-2"
+                id="played-score-2"
+              ></div>
+              <div
+                class="gameboard__avatar gameboard__avatar-2"
+                id="played-avatar-2"
+              ></div>
+            </div>
+          </div>
+          <div class="gameboard__controls">
+            <button
+              type="button"
+              class="gameboard__controls__button"
+              id="end-game-btn"
+            >
+              End game
+            </button>
+            <button type="button" class="gameboard__controls__button" id="next-round-btn">
+              Next round
+            </button>
+          </div>
+        </dialog>
       </section>
     </main>
   </body>
