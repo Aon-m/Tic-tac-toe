@@ -245,11 +245,7 @@ const createGame = (function () {
       clearGameboard();
       domGameboard.hide();
       roundDiv.close();
-
-      setTimeout(() => {
-        nextRoundDiv.close();
-      }, 2000);
-
+      nextRoundDiv.close();
       gameActive = false;
     }
 
@@ -282,6 +278,7 @@ const createGame = (function () {
       const status = document.querySelector(".gameboard__status");
 
       gameActive = false;
+      computerIsMoving = true;
       humanCanClick = false;
 
       round++;
@@ -294,9 +291,9 @@ const createGame = (function () {
         }
 
         nextRoundDiv.showModal();
-        endGame();
 
         setTimeout(() => {
+          endGame();
           nextRoundDiv.close();
         }, 3000);
 
