@@ -245,7 +245,10 @@ const createGame = (function () {
       clearGameboard();
       domGameboard.hide();
       roundDiv.close();
-      nextRoundDiv.close();
+
+      setTimeout(() => {
+        nextRoundDiv.close();
+      }, 2000);
 
       gameActive = false;
     }
@@ -291,10 +294,10 @@ const createGame = (function () {
         }
 
         nextRoundDiv.showModal();
+        endGame();
 
         setTimeout(() => {
           nextRoundDiv.close();
-          endGame();
         }, 3000);
 
         return;

@@ -319,6 +319,7 @@ header {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  justify-self: flex-start;
   font-family: "Fredoka", sans-serif;
   font-weight: var(--font-weight-light);
   font-size: var(--size-font-large);
@@ -503,7 +504,7 @@ main {
 }
 @media screen and (min-width: 60rem) {
   .gameboard__player {
-    width: calc(20rem + 10vw);
+    width: calc(15rem + 10vw);
   }
 }
 .gameboard__player-1 {
@@ -645,10 +646,6 @@ main {
   border-radius: var(--size-small);
   border: none;
   background: var(--color-tertiary);
-  font-family: "Fredoka", sans-serif;
-  font-weight: var(--font-weight-medium);
-  font-size: 300%;
-  font-style: normal;
   letter-spacing: 0.15rem;
   text-transform: uppercase;
   text-align: center;
@@ -659,11 +656,25 @@ main {
 .gameboard__round {
   transform: translate(-50%, -50%);
   padding: var(--size-small) var(--size-medium);
+  font-family: "Fredoka", sans-serif;
+  font-weight: var(--font-weight-medium);
+  font-size: 100%;
+  font-style: normal;
+}
+@media screen and (min-width: 45rem) {
+  .gameboard__round {
+    font-size: 300%;
+    min-width: 25rem;
+  }
 }
 .gameboard__next-round {
   padding: var(--size-small);
   transform: translate(-50%, -50%) scale(0.5);
   min-width: 35rem;
+  font-family: "Fredoka", sans-serif;
+  font-weight: var(--font-weight-medium);
+  font-size: 300%;
+  font-style: normal;
   overflow: hidden;
 }
 @media screen and (min-width: 45rem) {

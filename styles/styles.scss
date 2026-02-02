@@ -17,6 +17,7 @@ body {
 
 header {
   @include m.flex(column);
+  justify-self: flex-start;
 
   @include m.font("Fredoka", var(--font-weight-light), var(--size-font-large));
   width: 100%;
@@ -195,7 +196,7 @@ main {
     width: calc(9rem + 10vw);
 
     @media screen and (min-width: 60rem) {
-      width: calc(20rem + 10vw);
+      width: calc(15rem + 10vw);
     }
 
     &-1 {
@@ -340,7 +341,6 @@ main {
     border: none;
     background: var(--color-tertiary);
 
-    @include m.font("Fredoka", var(--font-weight-medium), 300%);
     letter-spacing: 0.15rem;
     text-transform: uppercase;
     text-align: center;
@@ -352,12 +352,19 @@ main {
   &__round {
     transform: translate(-50%, -50%);
     padding: var(--size-small) var(--size-medium);
+    @include m.font("Fredoka", var(--font-weight-medium), 100%);
+
+    @media screen and (min-width: 45rem) {
+      font-size: 300%;
+      min-width: 25rem;
+    }
   }
 
   &__next-round {
     padding: var(--size-small);
     transform: translate(-50%, -50%) scale(0.5);
     min-width: 35rem;
+    @include m.font("Fredoka", var(--font-weight-medium), 300%);
     overflow: hidden;
 
     @media screen and (min-width: 45rem) {
