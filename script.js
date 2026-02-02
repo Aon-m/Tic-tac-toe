@@ -73,7 +73,13 @@ const createGame = (function () {
         turn++;
 
         setTimeout(() => {
-          if (gameActive) computerTurn();
+          const nextPlayer = turn % 2 === 0 ? player1 : player2;
+
+          if (gameActive && nextPlayer.isComputer) {
+            computerTurn();
+          } else {
+            humanCanClick = true;
+          }
         }, 100);
       });
     });
