@@ -124,6 +124,10 @@ main {
       border: none;
       background: transparent;
       cursor: pointer;
+
+      @media screen and (min-width: 45rem) {
+        font-size: 600%;
+      }
     }
 
     &:nth-child(1) {
@@ -169,6 +173,14 @@ main {
     padding-inline: 0.5rem;
     max-width: 100rem;
     margin: var(--size-small);
+    transform: scale(0.7);
+    gap: var(--size-medium);
+
+    @media screen and (min-width: 45rem) {
+      transform: scale(0.8);
+      gap: var(--size-small);
+      margin-block-end: 0;
+    }
   }
 
   &__player {
@@ -268,13 +280,27 @@ main {
     background-size: 50%;
 
     &-1 {
-      left: -60%;
+      left: calc(-1 * (10rem + 6vw));
       transform: translate(75%, -50%) skew(20deg);
+
+      @media screen and (min-width: 45rem) {
+        left: -80%;
+      }
+      @media screen and (min-width: 60rem) {
+        left: -50%;
+      }
     }
 
     &-2 {
-      right: -60%;
+      right: calc(-1 * (10rem + 6vw));
       transform: translate(-75%, -50%) skew(-20deg);
+
+      @media screen and (min-width: 45rem) {
+        right: -80%;
+      }
+      @media screen and (min-width: 60rem) {
+        right: -50%;
+      }
     }
   }
 
@@ -430,19 +456,5 @@ main {
   &__next-round::backdrop {
     background: var(--color-contrast-primary);
     opacity: 0.6;
-  }
-}
-
-// Media Queries
-
-@media screen and (min-width: 45rem) {
-  .gameboard {
-    &__players {
-      margin-block-end: 0;
-    }
-
-    &__square button {
-      font-size: 600%;
-    }
   }
 }
