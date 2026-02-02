@@ -195,7 +195,7 @@ main {
     width: calc(9rem + 10vw);
 
     @media screen and (min-width: 60rem) {
-      width: calc(12rem + 10vw);
+      width: calc(20rem + 10vw);
     }
 
     &-1 {
@@ -336,7 +336,6 @@ main {
   &__next-round {
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
     border-radius: var(--size-small);
     border: none;
     background: var(--color-tertiary);
@@ -351,18 +350,26 @@ main {
   }
 
   &__round {
+    transform: translate(-50%, -50%);
     padding: var(--size-small) var(--size-medium);
   }
 
   &__next-round {
     padding: var(--size-small);
+    transform: translate(-50%, -50%) scale(0.5);
+    min-width: 35rem;
     overflow: hidden;
 
-    .gameboard__players {
+    @media screen and (min-width: 45rem) {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    & > * {
       transform: scale(0.8);
-      width: 100%;
+    }
+
+    .gameboard__players {
       gap: var(--size-medium);
-      margin: 0;
 
       @media screen and (min-width: 60rem) {
         gap: var(--size-large);
@@ -372,35 +379,29 @@ main {
     .gameboard__player {
       &-1 {
         @media screen and (min-width: 60rem) {
-          margin-inline-start: var(--size-medium);
-          padding-inline-start: var(--size-medium);
+          padding-inline-start: var(--size-large);
+          margin-inline-start: 0;
         }
       }
 
       &-2 {
         @media screen and (min-width: 60rem) {
-          margin-inline-end: var(--size-medium);
-          padding-inline-end: var(--size-medium);
+          padding-inline-end: var(--size-large);
+          margin-inline-end: 0;
         }
       }
     }
 
     .gameboard__avatar {
       &-1 {
-        left: -80%;
-        transform: translate(75%, -50%) skew(20deg);
-
         @media screen and (min-width: 60rem) {
-          left: -65%;
+          left: -60%;
         }
       }
 
       &-2 {
-        right: -80%;
-        transform: translate(-75%, -50%) skew(-20deg);
-
         @media screen and (min-width: 60rem) {
-          right: -65%;
+          right: -60%;
         }
       }
     }
